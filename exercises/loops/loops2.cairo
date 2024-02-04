@@ -1,7 +1,7 @@
 // loops2.cairo
 // Execute `starklings hint loops2` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
+
 
 #[test]
 #[available_gas(200000)]

@@ -3,7 +3,7 @@
 // The contract shows that he is the owner of the contract.
 // However, his contract is not working. What's he missing?
 
-// I AM NOT DONE
+
 
 #[starknet::interface]
 trait IJoesContract<TContractState> {
@@ -14,13 +14,28 @@ trait IJoesContract<TContractState> {
 mod JoesContract {
     #[storage]
     struct Storage {}
-
+    
+    
+    #[constructor]
+    fn constructor(ref self:ContractState
+        
+    ) { // TODO: Write `owner` to contract_owner storage
+    
+    }
+    #[external(v0)]
     impl IJoesContractImpl of super::IJoesContract<ContractState> {
+        #[abi(embed_v0)]
         fn get_owner(self: @ContractState) -> felt252 {
             'Joe'
         }
     }
 }
+
+
+
+
+
+//
 
 #[cfg(test)]
 mod test {
