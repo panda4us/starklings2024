@@ -2,7 +2,7 @@
 // Address all the TODOs to make the tests pass!
 // Execute `starklings hint starknet5` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
+
 
 use core::traits::Into;
 use core::result::ResultTrait;
@@ -11,6 +11,7 @@ use array::ArrayTrait;
 use traits::TryInto;
 use option::OptionTrait;
 use starknet::class_hash::Felt252TryIntoClassHash;
+//use debug::PrintTrait;
 
 #[starknet::interface]
 trait IContractA<TContractState> {
@@ -37,12 +38,23 @@ mod ContractA {
 
     #[constructor]
     fn constructor(ref self: ContractState, contract_b: ContractAddress) {
-        self.contract_b.write(contract_b)
+        self.contract_b.write(contract_b);
     }
 
     #[external(v0)]
     impl ContractAImpl of super::IContractA<ContractState> {
         fn set_value(ref self: ContractState, value: u128) -> bool {
+            let contract_b=self.contract_b.read();
+            let tmp=IContractBDispatcher {contract_address: contract_b};
+            let test = tmp.is_enabled();
+            assert(test==true,'not enabled!');
+            if test{
+                self.value.write(value);
+                true
+            }else{
+                false
+            }
+            
             // TODO: check if contract_b is enabled.
             // If it is, set the value and return true. Otherwise, return false.
         }
@@ -127,6 +139,7 @@ mod test {
         let contract_b = IContractBDispatcher { contract_address: address_b };
 
         //TODO interact with contract_b to make the test pass.
+        contract_b.enable();
 
         // Tests
         assert(contract_a.set_value(300) == true, 'Could not set value');
